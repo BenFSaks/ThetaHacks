@@ -1,10 +1,21 @@
-#![cfg_attr(
-  all(not(debug_assertions), target_os = "windows"),
-  windows_subsystem = "windows"
-)]
+// Prevents additional console window on Windows in release, DO NOT REMOVE!!
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
+#[tauri::command]
+fn start_recording() {
+println!("REC: In Progress");
+}
+
+#[tauri::command]
+fn stop_recording() {
+println!("REC: Stopped");
+}
+
 
 fn main() {
-  tauri::Builder::default()
+tauri::Builder::default()
+    // This is where you pass in your commands
+    .invoke_handler(tauri::generate_handler![start_recording])
     .run(tauri::generate_context!())
-    .expect("error while running tauri application");
+    .expect("failed to run app");
 }
