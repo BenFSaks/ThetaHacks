@@ -1,17 +1,16 @@
 use std::process::Command;
 use std::time::Duration;
 fn main() {
-    record_camera_screen();
+    let mut record = Command::new("ffmpeg");
+    record.arg("-f").arg("gdigrab").arg("-i").arg("desktop").arg("out.wmv");
+    let mut s = record.spawn();
+    let sleep = Duration::from_secs(7);
+    std::thread::sleep(sleep);
+    s.expect("He").kill().expect("cant kill it");
 }
 
 fn record_camera_screen() {
-    let mut record = Command::new("ffmpeg");
-    record.arg("-f").arg("gdigrab").arg("-i").arg("desktop").arg("out.mp4").output();
-   // record.arg("-f").arg("gdigrab").arg("-thread_queue_size").arg("64").arg("-framerate").arg("30").arg("-i").arg("desktop").arg("-f").arg("dshow").arg("-i").arg("video=\"FaceTime HD Camera (Built-in)\":audio=\"Internal Digital Microphone (Apple Audio Device)\"").arg("-filter_complex").arg("overlay").arg("overlayed.mp4");
-    let sleep = Duration::from_secs(5);
-    std::thread::sleep(sleep);
-    println!("stop recording");
-    record.arg("q").output().expect("failed to execute process").;
+    println!("recording");
 }
 //ffmpeg -f dshow -i video="FaceTime HD Camera (Built-in)":audio="Internal Digital Microphone (Apple Audio Device)" out.mp4
 //above command records my camera and audio nicely but it has a 4 second delay from the start 
