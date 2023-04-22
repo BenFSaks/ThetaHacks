@@ -1,7 +1,11 @@
+//REACT
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
+//TAURI
 import { invoke } from "@tauri-apps/api/tauri";
-import "./App.css";
+//STYLES
+import "./styles/App.css";
+
 
 function App() {
 
@@ -13,6 +17,7 @@ function App() {
 
             <div id='menu-buttons'>
                 <button type='button'>RECORD</button>
+                <button type='button' onClick={() => invoke('open_settings_window')}>SETTINGS</button>
             </div>
         </div>
   );
