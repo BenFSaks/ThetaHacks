@@ -2,13 +2,35 @@ use std::time::Duration;
 use std::io::{Write, self};
 use std::process::{Command, Stdio};
 fn main() {
-
-
-    record_camera_screen(4).expect("didnt work");
+    // //-f gdigrab -thread_queue_size 64 -framerate 30 -i desktop -f dshow -i video="FaceTime HD Camera (Built-in)":audio="Internal Digital Microphone (Apple Audio Device)" -filter_complex 'overlay' overlayed.mp4
+    get_dshow_devices();
 }
 
+fn get_dshow_devices() {
+    let mut list = Command::new("ffmpeg")
+        .arg("-list_devices")
+        .arg("true")
+        .arg("-f")
+        .arg("dshow")
+        .arg("-i")
+        .arg("dummy")
+        // Tell the OS to record the command's output
+        .stdout(Stdio::piped())
+        // execute the command, wait for it to complete, then capture the output
+        .output()
+        .expect("failed to execute process");
+
+    // extract the raw bytes that we captured and interpret them as a string
+    //let output = list.wait_with_output()?;
+    let output = list.wait_with_output().expect("failed to wait on child");
+    let stdout = String::from_utf8().unwrap();
+    println!("stdout = {:?}", stdout);
+}
+
+
 fn record_camera_screen(time: u64) -> io::Result<()> {
-    let vid = "video=\"FaceTime HD Camera (Built-in)\":audio=\"Internal Digital Microphone (Apple Audio Device)\"";
+    let vid = "video=\"FaceTime HD Camera (Built-in)\" ";
+    let vid2 = "video=\"@device_pnp_\\?\\usb#vid_05ac&pid_8514&mi_00#7&14e17b62&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\\global\"";
     // //-f gdigrab -thread_queue_size 64 -framerate 30 -i desktop -f dshow -i video="FaceTime HD Camera (Built-in)":audio="Internal Digital Microphone (Apple Audio Device)" -filter_complex 'overlay' overlayed.mp4
     let mut record = Command::new("ffmpeg")
 
@@ -23,7 +45,7 @@ fn record_camera_screen(time: u64) -> io::Result<()> {
         .arg("-f")
         .arg("dshow")
         .arg("-i")
-        .arg(vid)
+        .arg("video=FaceTime HD Camera (Built-in):audio=Internal Digital Microphone (Apple Audio Device)")
         .arg("-filter_complex")
         .arg("'overlay'")
         .arg("overlayed.mp4")
