@@ -16,7 +16,7 @@ function App() {
 
     //PROBLEM: can only view source 
     const webview = new WebviewWindow('Settings', {
-      url: 'src/Settings.tsx',
+      url: '../index2.html',
     })
 
     // wait for the webview window to be created
