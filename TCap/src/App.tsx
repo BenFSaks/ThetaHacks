@@ -7,7 +7,6 @@ import { LogicalPosition, WebviewWindow } from '@tauri-apps/api/window'
 import { appWindow } from "@tauri-apps/api/window";
 //STYLES
 import "./styles/App.css";
-import { error } from "console";
 
 
 function App() {
@@ -36,10 +35,27 @@ function App() {
               <h1>TCap</h1>
               </div>
 
-              <div id='menu-buttons'>
-                  <button type='button'>RECORD</button>
-                  <button type='button' onClick={() => open_settings_window()}>SETTINGS</button>
+              <div id='preview-panel'>
+                <h3>PREVIEW</h3>
               </div>
+
+              <div id='panel-container'>
+                <div id='record-panel'>
+                    <h3>RECORD</h3>
+                    <button type='button'>START</button>
+                    <button type='button'>PAUSE</button>
+                    <button type='button'>STOP</button>
+                    
+                </div>
+                <div id='config-panel'>
+                    <h3>CONFIG</h3>
+                    <button type='button' onClick={() => open_settings_window()}>SETTINGS</button>
+                    <button type='button'>EDIT</button>
+                    <button type='button'>SHARE</button>
+                </div>
+              </div>
+
+              
           </div>
     );
   }

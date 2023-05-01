@@ -5,3 +5,82 @@
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafb);
 }
+
+/* ------------------------------------------------------- */
+/* GLOBAL CSS */
+
+button {
+  width: 50%;
+  margin-top: 10px;
+}
+
+/* ------------------------------------------------------- */
+
+#menu-header h3{
+  display: flex;
+  justify-content: center;
+}
+
+#preview-panel{
+  background-color: red;
+
+  border-style: solid;
+  border-color: black;
+  border-width: 5px;
+  
+  
+  margin-left: 10%; 
+  margin-right: 10%;
+  height: 300px;
+
+  display: flex;
+  justify-content: center;
+
+}
+
+#panel-container{
+  
+  display: grid;
+  grid-template-columns: 50% 50%; 
+
+  height: 300px;
+
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+#record-panel{
+  border-style: solid;
+  border-color: black;
+  border-width: 2px;
+
+  margin-right: 2.5px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#record-panel h3{
+  display: flex;
+  justify-content: center;
+}
+
+
+#config-panel{
+  border-style: solid;
+  border-color: black;
+  border-width: 2px;
+
+  margin-left: 2.5px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#config-panel h3{
+  display: flex;
+  justify-content: center;
+}
+
