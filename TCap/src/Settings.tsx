@@ -2,17 +2,19 @@ function Settings() {
 
     return (
         <div id='settings-container'>
-            <h1>Settings asdf sadf</h1>
+            <h1>Settings</h1>
         </div>
     );
   }
   export default Settings;
+
+
+//PAGE RENDER
 import React from "react";
 import ReactDOM from "react-dom/client";
-//import App from "./App";
 import "./styles/styles.css";
 
-ReactDOM.createRoot(document.getElementById("root2") as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById("settings-route") as HTMLElement).render(
   <React.StrictMode>
     <Settings />
   </React.StrictMode>
