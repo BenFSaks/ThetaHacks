@@ -1,52 +1,58 @@
 import React from 'react'
-import './App.css'
-import { SignIn } from './SignIn'
-import TikTok from './TikTok'
-import firebase from 'firebase/compat/app'
-import 'firebase/compat/firestore'
-import 'firebase/compat/auth'
-import {useAuthState} from 'react-firebase-hooks/auth'
-import {useCollectionData } from 'react-firebase-hooks/firestore'
-import Upload from './Upload'
 import { useNavigate} from 'react-router-dom'
+import firebase from 'firebase/compat/app'
+import {useAuthState} from 'react-firebase-hooks/auth'
+import 'firebase/compat/auth'
+import { Auth } from '@firebase/auth'
+import { TikTok } from './TikTok'
+import './ViewTok.css'
 
+interface Props {
+  auth: Auth;
+}
 
-
-
-const env = import.meta.env;
-console.log(env.VITE_appId)
-const app = firebase.initializeApp({
-  apiKey: env.VITE_apiKey,
-  authDomain: env.VITE_authDomain,
-  projectId: env.VITE_projectId,
-  storageBucket: env.VITE_storageBucket,
-  messagingSenderId: env.VITE_messagingSenderId,
-  appId: env.VITE_appId
-})
-
-const auth:any = firebase.auth();
-const firestore = firebase.firestore();
-
-
-export default function ViewTok() {
+export const ViewTok: React.FC<Props> = ({auth}) => {
     const [user] = useAuthState(auth);
     const navigate = useNavigate();
+    console.log()
+    const SignIn = () => {
+        const signInWithGoogle = async () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            const logIn = await firebase.auth().signInWithPopup(provider);
+            const db = firebase.firestore();
+            const userId = logIn.user?.uid
+            const usersCollection = db.collection('users');
+            const userDoc = usersCollection.doc(userId);
+            const user = await userDoc.get();
+            if (!user.exists){
+                console.log("cool");
+                if (userId != undefined){
+                    userDoc.set({"uploads" : []});
+                } else {
+                    console.error("User id is undefined")
+                }
+            }
+        };
+        return (
+            <div>
+                <h2>Sign In Page</h2>
+                <button onClick={signInWithGoogle}>Sign In</button>
+            </div>
+        );
+    };
     return (
         <div className="App">
-        <h1>Theta Tok</h1>
-        {user ?  
-                <div>
-                    <button onClick={() => navigate("/upload")}>Upload</button>
-                    <button onClick={() => firebase.auth().signOut()}>Signout</button>
-                </div>
-            : 
-                <SignIn auth={auth}></SignIn>}
-        {/* To be replaced with a Tik Tok Component  */}
-        <div className="tiktok">
-            <p>
-            This is where the tiktok video will be played ... do we overlay a ui?
-            </p>
-        </div>
+            <h1>Theta Tok</h1>
+            {user ?  
+                    <div>
+                        <button onClick={() => navigate("/upload")}>Upload</button>
+                        <button onClick={() => firebase.auth().signOut()}>Signout</button>
+                    </div>
+                : 
+                    <SignIn></SignIn>}
+            <div className="tiktok">
+                <TikTok></TikTok>
+            </div>
         </div>
     )
 }
