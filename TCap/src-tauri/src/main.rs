@@ -68,7 +68,7 @@ fn get_dshow_devices() -> Vec<String> {
 
 
 #[tauri::command(rename_all = "snake_case")]
-fn record(time: u64, video: &String, audio: &String, output: &String) -> io::Result<()> {
+fn record(time: u64, video: &str, audio: &str, output: &str) {
 
     // we format the video and audio strings into the format that ffmpeg wants
     let mut vid = "video=".to_owned();
@@ -99,7 +99,7 @@ fn record(time: u64, video: &String, audio: &String, output: &String) -> io::Res
 
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
-        .spawn()?;
+        .spawn().unwrap();
 
 
     //record for time amount of seconds
@@ -108,7 +108,7 @@ fn record(time: u64, video: &String, audio: &String, output: &String) -> io::Res
 
     // send a q to the stdin of the ffmpeg process to stop recording
     let record_stdin = record.stdin.as_mut().unwrap();
-    record_stdin.write_all(b"q")?;
+    record_stdin.write_all(b"q").expect("failed to send q to ffmpeg process");
 
-    Ok(())
+
 }

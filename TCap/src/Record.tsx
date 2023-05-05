@@ -29,10 +29,10 @@ export default function Record(){
             <h1>Hello TCap</h1>
             <button type='button' onClick={()=> startRecordHandler()}>RECORD</button> 
             <button type='button' onClick={()=> stopRecordHandler()}>STOP</button>
-            <button type='button' onClick={()=> recordToDesktop(10,
+            <button type='button' onClick={()=> recordToDesktop(5,
                 'FaceTime HD Camera (Built-in)',
                 'Internal Digital Microphone (Apple Audio Device)',
-                'C:\\Users\\rethe\\OneDrive\\fromTauri.mp4')}>
+                'C:\\Users\\rethe\\OneDrive\\Desktop\\fromTauri.mp4')}>
                 RECORD TO DESKTOP
             </button>
 
