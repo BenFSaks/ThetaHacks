@@ -14,12 +14,14 @@ export default function Record(){
         setRecording(false);
     }
 
-    function record_to_desktop(time: number, videoInput: string, audioInput: string, outputFile: string) {
-        invoke('record_camera_screen', {
+    function recordToDesktop(time: number, video: string, audio: string, output: string) {
+        invoke('record', {
             time: time,
-            videoInput: videoInput,
-            audioInput: audioInput,
-            outputFile: outputFile
+            video: video,
+            audio: audio,
+            output: output
+        }).then((r) => {
+            console.log(r);
         });
     }
     return(
@@ -27,7 +29,12 @@ export default function Record(){
             <h1>Hello TCap</h1>
             <button type='button' onClick={()=> startRecordHandler()}>RECORD</button> 
             <button type='button' onClick={()=> stopRecordHandler()}>STOP</button>
-            <button type='button' onClick={()=> record_to_desktop(10, 'FaceTime HD Camera (Built-in)', 'Internal Digital Microphone (Apple Audio Device)', 'C:\\Users\\rethe\\OneDrive\\fromTauri.mp4')}>RECORD TO DESKTOP</button>
+            <button type='button' onClick={()=> recordToDesktop(10,
+                'FaceTime HD Camera (Built-in)',
+                'Internal Digital Microphone (Apple Audio Device)',
+                'C:\\Users\\rethe\\OneDrive\\fromTauri.mp4')}>
+                RECORD TO DESKTOP
+            </button>
 
             <h2>REC: {isRecording.toString().toUpperCase()} </h2>
         </div>

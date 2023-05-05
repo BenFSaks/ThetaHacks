@@ -7,6 +7,7 @@ import { LogicalPosition, WebviewWindow } from '@tauri-apps/api/window'
 import { appWindow } from "@tauri-apps/api/window";
 //STYLES
 import "./styles/App.css";
+import Record from "./Record";
 
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
                     <button type='button'>SHARE</button>
                 </div>
               </div>
+          <Record/>
           </div>
     );
   }
