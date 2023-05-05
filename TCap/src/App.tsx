@@ -1,6 +1,5 @@
 //REACT
-import { useState } from "react";
-import React from "react";
+import { useEffect, useState } from "react";
 
 //TAURI
 import { invoke } from "@tauri-apps/api/tauri";
@@ -15,6 +14,15 @@ function App() {
 
   const [audioInput, setAudioInput] = useState([]); 
   const [videoInput, setVideoInput] = useState([]); 
+
+  const fetchAudioInput = () => { 
+    return invoke('get_dshow_devices')
+            .then((res) => res.json()) 
+            .then((d) => setAudioInput(d)) 
+    }
+    useEffect(() => {
+      fetchAudioInput();
+    }, [])
 
 
   async function open_settings_window(){
@@ -75,12 +83,9 @@ function App() {
                     <button type='button'>SHARE</button>
                 </div>
               </div>
-<<<<<<< HEAD
 
               
-=======
           <Record/>
->>>>>>> main
           </div>
     );
   }
