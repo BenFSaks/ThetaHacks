@@ -54,8 +54,6 @@ function App() {
                     <button type='button'>SHARE</button>
                 </div>
               </div>
-
-              
           </div>
     );
   }
