@@ -2,7 +2,8 @@ use std::time::Duration;
 use std::io::{Write, self};
 use std::process::{Command, Stdio};
 fn main() {
-
+    println!("{:?}", get_dshow_devices());
+    record_camera_screen(10, &get_dshow_devices()[0], &get_dshow_devices()[2]);
 }
 
 
@@ -49,7 +50,7 @@ fn get_dshow_devices() -> Vec<String> {
 
 
 
-fn record_camera_screen(time: u64, video: &String, audio: &String) -> io::Result<()> {
+fn record_camera_screen(time: u64, video: &String, audio: &String) {
 
     // we format the video and audio strings into the format that ffmpeg wants
     let mut vid = "video=".to_owned();
@@ -80,7 +81,7 @@ fn record_camera_screen(time: u64, video: &String, audio: &String) -> io::Result
 
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
-        .spawn()?;
+        .spawn().unwrap();
 
 
     //record for time amount of seconds
@@ -89,7 +90,5 @@ fn record_camera_screen(time: u64, video: &String, audio: &String) -> io::Result
 
     // send a q to the stdin of the ffmpeg process to stop recording
     let record_stdin = record.stdin.as_mut().unwrap();
-    record_stdin.write_all(b"q")?;
-
-    Ok(())
+    record_stdin.write_all(b"q").expect("failed to write to stdin");
  }
