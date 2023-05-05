@@ -2,7 +2,13 @@ use std::time::Duration;
 use std::io::{Write, self};
 use std::process::{Command, Stdio};
 fn main() {
+    //C:\Users\rethe\OneDrive\Desktop
 
+    let path = "C:\\Users\\rethe\\OneDrive\\Desktop\\test.mp4";
+    let video = "FaceTime HD Camera (Built-in)";
+    let audio = "Internal Digital Microphone (Apple Audio Device)";
+    let time = 5;
+    record_camera_screen(time, &video.to_string(), &audio.to_string(), &path.to_string()).unwrap();
 }
 
 
@@ -49,7 +55,7 @@ fn get_dshow_devices() -> Vec<String> {
 
 
 
-fn record_camera_screen(time: u64, video: &String, audio: &String) -> io::Result<()> {
+fn record_camera_screen(time: u64, video: &String, audio: &String, output_file_name: &String) -> io::Result<()> {
 
     // we format the video and audio strings into the format that ffmpeg wants
     let mut vid = "video=".to_owned();
@@ -76,7 +82,7 @@ fn record_camera_screen(time: u64, video: &String, audio: &String) -> io::Result
         .arg(vid)
         .arg("-filter_complex")
         .arg("'overlay'")
-        .arg("overlayed.mp4")
+        .arg(output_file_name)
 
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
