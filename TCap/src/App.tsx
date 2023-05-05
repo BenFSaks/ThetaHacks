@@ -1,6 +1,7 @@
 //REACT
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
+import React from "react";
+
 //TAURI
 import { invoke } from "@tauri-apps/api/tauri";
 import { LogicalPosition, WebviewWindow } from '@tauri-apps/api/window'
@@ -9,11 +10,15 @@ import { appWindow } from "@tauri-apps/api/window";
 import "./styles/App.css";
 
 
+
 function App() {
 
   async function open_settings_window(){
 
+<<<<<<< Updated upstream
     //PROBLEM: can only view source 
+=======
+>>>>>>> Stashed changes
     const webview = new WebviewWindow('Settings', {
       url: '../settings.html',
     })
@@ -28,6 +33,10 @@ function App() {
     const physicalSize = await webview.innerSize()
     console.log(`Settings Window Opened Successfully, Physical Size: ${physicalSize.width}x${physicalSize.height}`)
   }
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
     return (
       <div id='menu-container'>
@@ -42,6 +51,10 @@ function App() {
               <div id='panel-container'>
                 <div id='record-panel'>
                     <h3>RECORD</h3>
+<<<<<<< Updated upstream
+=======
+                    <button type='button'>CROP</button>
+>>>>>>> Stashed changes
                     <button type='button'>START</button>
                     <button type='button'>PAUSE</button>
                     <button type='button'>STOP</button>
@@ -54,6 +67,8 @@ function App() {
                     <button type='button'>SHARE</button>
                 </div>
               </div>
+
+              
           </div>
     );
   }
