@@ -12,6 +12,10 @@ import "./styles/App.css";
 
 function App() {
 
+  const [audioInput, setAudioInput] = useState([]); 
+  const [videoInput, setVideoInput] = useState([]); 
+
+
   async function open_settings_window(){
 
     const webview = new WebviewWindow('Settings', {
@@ -43,7 +47,11 @@ function App() {
       <div id='menu-container'>
               <div id='menu-header'>
                 <h1>TCap</h1>
-                  <input type="text" id="path"/>
+                  <input type="text" placeholder="Record Path" id="path"/>
+                  <input type="text" placeholder="Duration: 00:00:00" id="duration"/>
+                  
+                  <input type="dropdown" id="audio"/>
+                  <input type="dropdown" id="video"/>
               </div>
 
               <div id='preview-panel'>
