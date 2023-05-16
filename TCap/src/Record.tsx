@@ -1,21 +1,14 @@
 import { invoke } from '@tauri-apps/api/tauri'
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
 
-export default function Record(){
-    const [isRecording, setRecording] = useState(false);
-
-    function startRecordHandler(){
-        invoke('start_recording');
-        setRecording(true);
-    }
-
-    function stopRecordHandler(){
-        invoke('stop_recording');
-        setRecording(false);
-    }
-
-    function recordToDesktop(time: number, video: string, audio: string, output: string) {
+const Record = (props: { inputValues: Array<string>}) => {
+    
+    const [isRecording, setRecording] = useState(false); 
+   
+    function recordToDesktop(time: number, video: string, audio: string, output: string){
         invoke('record', {
             time: time,
             video: video,
@@ -25,11 +18,16 @@ export default function Record(){
             console.log(r);
         });
     }
+
     return(
         <div id='record'>
-            <h1>Hello TCap</h1>
-            <button type='button' onClick={()=> startRecordHandler()}>RECORD</button> 
-            <button type='button' onClick={()=> stopRecordHandler()}>STOP</button>
+            <h1>Record</h1>
+            
+            <Dropdown options={props.inputValues} value={props.inputValues[0]} />
+            
+            <input type="text" placeholder="Record Path" id="path"/>
+            <input type="text" placeholder="Duration: 00:00:00" id="duration"/>
+
             <button type='button' onClick={()=> recordToDesktop(5,
                 'FaceTime HD Camera (Built-in)',
                 'Internal Digital Microphone (Apple Audio Device)',
@@ -41,3 +39,4 @@ export default function Record(){
         </div>
     )
 }
+export default Record; 

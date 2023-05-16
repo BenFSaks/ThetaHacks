@@ -8,23 +8,17 @@ import { appWindow } from "@tauri-apps/api/window";
 //STYLES
 import "./styles/App.css";
 import Record from "./Record";
+import Audio from "./Audio";
+
 
 
 function App() {
 
-  const [audioInput, setAudioInput] = useState([]); 
-  const [videoInput, setVideoInput] = useState([]); 
+  //States 
+  const [audioInput, setAudioInput] = useState<string[]>([]); 
+  const [videoInput, setVideoInput] = useState<string[]>([]); 
 
-  const fetchAudioInput = () => { 
-    return invoke('get_dshow_devices')
-            .then((res) => res.json()) 
-            .then((d) => setAudioInput(d)) 
-    }
-    useEffect(() => {
-      fetchAudioInput();
-    }, [])
-
-
+  //Open a new window called settings 
   async function open_settings_window(){
 
     const webview = new WebviewWindow('Settings', {
@@ -43,6 +37,7 @@ function App() {
     console.log(`Settings Window Opened Successfully, Physical Size: ${physicalSize.width}x${physicalSize.height}`)
   }
 
+  //Open transparent cropable window 
   function open_crop_window(){
 
     const webview = new WebviewWindow('Crop', {
@@ -52,15 +47,23 @@ function App() {
     })
   }
 
+  //Method to get input options (audio, video, cam)
+  const fetchInputData = async() => { 
+      const audio: Array<string> = await invoke('get_dshow_devices');
+      const video: Array<string> = await invoke('get_dshow_devices');
+      
+      setAudioInput(audio);
+      setVideoInput(video); 
+      console.log(audioInput); 
+  }
+  useEffect(() => {
+    fetchInputData();
+  }, [])
+
     return (
       <div id='menu-container'>
-              <div id='menu-header'>
+              {/* <div id='menu-header'>
                 <h1>TCap</h1>
-                  <input type="text" placeholder="Record Path" id="path"/>
-                  <input type="text" placeholder="Duration: 00:00:00" id="duration"/>
-                  
-                  <input type="dropdown" id="audio"/>
-                  <input type="dropdown" id="video"/>
               </div>
 
               <div id='preview-panel'>
@@ -82,11 +85,15 @@ function App() {
                     <button type='button'>EDIT</button>
                     <button type='button'>SHARE</button>
                 </div>
-              </div>
+              </div> */}
 
-              
-          <Record/>
-          </div>
+          <Audio 
+              inputValues = {audioInput}
+          />
+          <Record 
+              inputValues = {videoInput}
+          />
+      </div>
     );
   }
 

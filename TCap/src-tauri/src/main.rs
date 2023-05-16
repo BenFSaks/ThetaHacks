@@ -4,21 +4,12 @@
 use std::process::{Command, Stdio};
 use std::io::{self, Write};
 use std::time::Duration;
-//TUARI COMMANDS 
-#[tauri::command]
-fn start_recording() {
-println!("REC: In Progress");
-}
-#[tauri::command]
-fn stop_recording() {
-println!("REC: Stopped");
-}
 
 fn main() {
     tauri::Builder::default()
     
     //Invoke Functions 
-    .invoke_handler(tauri::generate_handler![start_recording, record])
+    .invoke_handler(tauri::generate_handler![record, get_dshow_devices])
     
     //Tauri App Generator 
     .run(tauri::generate_context!())
@@ -27,8 +18,6 @@ fn main() {
 }
 #[tauri::command]
 fn get_dshow_devices() -> Vec<String> {
-
-
     let mut list = Command::new("ffmpeg")
         .arg("-list_devices")
         .arg("true")
@@ -65,8 +54,6 @@ fn get_dshow_devices() -> Vec<String> {
     devices
 }
 
-
-
 #[tauri::command(rename_all = "snake_case")]
 fn record(time: u64, video: &str, audio: &str, output: &str) {
 
@@ -101,7 +88,6 @@ fn record(time: u64, video: &str, audio: &str, output: &str) {
         .stdout(Stdio::piped())
         .spawn().unwrap();
 
-
     //record for time amount of seconds
     //+1 is because it stops the recording a second early for some reason
     std::thread::sleep(Duration::from_secs(time+1));
@@ -109,6 +95,5 @@ fn record(time: u64, video: &str, audio: &str, output: &str) {
     // send a q to the stdin of the ffmpeg process to stop recording
     let record_stdin = record.stdin.as_mut().unwrap();
     record_stdin.write_all(b"q").expect("failed to send q to ffmpeg process");
-
 
 }
