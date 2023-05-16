@@ -1,16 +1,9 @@
-//REACT
 import { useEffect, useState } from "react";
-
-//TAURI
 import { invoke } from "@tauri-apps/api/tauri";
-import { LogicalPosition, WebviewWindow } from '@tauri-apps/api/window'
-import { appWindow } from "@tauri-apps/api/window";
-//STYLES
+import { WebviewWindow } from '@tauri-apps/api/window'
 import "./styles/App.css";
-import Record from "./Record";
-import Audio from "./Audio";
 
-
+import Config from "./Config";
 
 function App() {
 
@@ -87,11 +80,9 @@ function App() {
                 </div>
               </div> */}
 
-          <Audio 
-              inputValues = {audioInput}
-          />
-          <Record 
-              inputValues = {videoInput}
+          <Config 
+            videoValues = {videoInput}
+            audioValues = {audioInput}
           />
       </div>
     );
