@@ -8,6 +8,7 @@ import { ViewTok } from './ViewTok'
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
 import 'firebase/compat/auth'
+import 'firebase/firestore';
 import { getAuth } from '@firebase/auth'
 
 const env = import.meta.env;

@@ -1,0 +1,15 @@
+.yourVideos{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: auto;
+
+}
+header{
+    display: flex;
+    justify-content: space-around;
+}
+.yourVideos > div > h2 {
+    color: aquamarine;
+
+}

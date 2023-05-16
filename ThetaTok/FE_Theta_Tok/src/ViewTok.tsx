@@ -23,9 +23,8 @@ export const ViewTok: React.FC<Props> = ({auth}) => {
             const userId = logIn.user?.uid
             const usersCollection = db.collection('users');
             const userDoc = usersCollection.doc(userId);
-            const user = await userDoc.get();
-            if (!user.exists){
-                console.log("cool");
+            const userData = await userDoc.get();
+            if (!userData.exists){
                 if (userId != undefined){
                     userDoc.set({"uploads" : []});
                 } else {
@@ -45,7 +44,7 @@ export const ViewTok: React.FC<Props> = ({auth}) => {
             <h1>Theta Tok</h1>
             {user ?  
                     <div>
-                        <button onClick={() => navigate("/upload")}>Upload</button>
+                        <button onClick={() => navigate("/upload", {state: {userId: user.uid}})}>Upload</button>
                         <button onClick={() => firebase.auth().signOut()}>Signout</button>
                     </div>
                 : 

@@ -1,24 +1,43 @@
 import { getFirestore, collection } from 'firebase/firestore';
-import { useCollection } from 'react-firebase-hooks/firestore';
+import { useCollection  } from 'react-firebase-hooks/firestore';
+import { useIdToken  } from 'react-firebase-hooks/auth';
 import React, {useState, useEffect} from 'react'
 import firebase from 'firebase/compat/app'
-
-
+import { getAuth } from '@firebase/auth';
+import { useLocation } from 'react-router-dom';
+import './Upload.css'
+import { UploadVideo } from './UploadVideo';
 
 interface Props {
   firebaseApp: firebase.app.App;
 }
 interface User{
   id: string;
+  uploads: Array<Upload>;
+}
+interface Upload{
+  created_at: Date;
+  likes: number;
+  title: string;
+  user_id: string;
+  video_src: string;
 }
 export const Upload: React.FC<Props> = ({firebaseApp}) => {
-  const [data, setData] = useState<User[]>([]);
+  const location = useLocation();
 
+  const [token] = useIdToken(getAuth(firebaseApp));
+  const [data, setData] = useState<Upload[]>([]);
+  const [userId, setUserId] = useState<firebase.User | null>(null);
+  const [isUpload, setIsUpload] = useState(true);
+
+  // const useUpload = () =>
   const getUserCollection = async () => {
     const db = firebaseApp.firestore();
-    const usersCollection = db.collection('users');
+    const usersCollection = db.collection('users').doc(firebase.auth().currentUser?.uid);
     const usersSnapshot = await usersCollection.get();
-    return usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const uploads = usersSnapshot.data()?.uploads
+    return uploads
+  
   }
 
   useEffect(() => {
@@ -26,22 +45,44 @@ export const Upload: React.FC<Props> = ({firebaseApp}) => {
       const users = await getUserCollection()
       setData(users)
     }
+
     fetchData();
-  }, []);
-  console.log(data)
-  // const db = getFirestore(firebaseApp);
-  // const [value, loading, error] = useCollection(
-  //   collection(getFirestore(firebaseApp), 'users'),
-  //   {
-  //     snapshotListenOptions: { includeMetadataChanges: true },
-  //   });
-  // console.log(value)
-  // console.log(loading)
-  // console.log(error)
+  }, [token]);
+  const YourVideos = () => {
+    return (
+      <div >
+        <div className='yourVideos'>
+          {data.map((upload) =>{
+            return (
+              <div key={upload.title}>
+                <h2>{upload.title}</h2>
+                <iframe src={upload.video_src}  allowFullScreen width="450" height="720" />
+              </div>
+            )
+          })}
+        </div>
+    </div>
+    )
+  }
+  const containerStyle = {
+  };
   return (
     <div>
-      <h1></h1>
-      <h1>Upload ThetaTok</h1>
+      <h1>Upload </h1>
+      <header>
+        <h1 onClick={() => setIsUpload(false)} style={
+          {backgroundColor: isUpload ? 'inherit' : 'black',}
+        }>Your Videos</h1> 
+        <h1 onClick={() => setIsUpload(true)} style={
+          {backgroundColor: isUpload ? 'black' : 'inherit',}
+        }>Upload a Video</h1> 
+      </header>
+      {isUpload ? 
+        <UploadVideo />
+      :
+        (data ? (<YourVideos/>) : <h1>Loading...</h1>)
+      }
+
     </div>
   )
 }
