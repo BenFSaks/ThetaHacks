@@ -46,8 +46,7 @@ function App() {
       const video: Array<string> = await invoke('get_dshow_devices');
       
       setAudioInput(audio);
-      setVideoInput(video); 
-      console.log(audioInput); 
+      setVideoInput(video);  
   }
   useEffect(() => {
     fetchInputData();
