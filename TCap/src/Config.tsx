@@ -40,27 +40,29 @@ const Config = (props: { audioValues: Array<string>, videoValues: Array<string>}
             <div id='config-record'>
                 <h1>Record</h1>
                 <Dropdown 
-                    options={props.videoValues} onChange={e => setVideoInput(e.value)} value={props.videoValues[0]} />
+                    options={props.videoValues} onChange={e => setVideoInput(e.value)} placeholder="Select Input"/>
             </div>
             
 
             {/* AUDIO CONFIG SETTINGS */}
             <div id='config-audio'>
                 <h1>Audio</h1>
-                <Dropdown options={props.audioValues} onChange={e => setAudioInput(e.value)} value={props.audioValues[0]} />
+                <Dropdown options={props.audioValues} onChange={e => setAudioInput(e.value)} placeholder="Select Input"/>
             </div>
 
 
-            {/* //PATH CONFIG SETTINGS */}
+            {/* PATH CONFIG SETTINGS */}
             <div id='config-path'>
                 <h1>Path</h1>
-                <label htmlFor='path'>Record Path</label>
+                <label htmlFor='path'>Record Path </label>
                 <input type="text" onChange={e => setPath(e.target.value)} placeholder="/" name="path"/>
             </div>
 
+
+            {/* DURATION CONFIG SETTINGS */}
             <div id='config-duration'>
                 <h1>Duration</h1>
-                <label htmlFor='path'>Duration</label>
+                <label htmlFor='path'>Duration(s) </label>
                 <input type="number" onChange={e => setDuration(e.target.valueAsNumber)} placeholder="00:00" name="duration" min="1" max="15"/>
             </div>
 
