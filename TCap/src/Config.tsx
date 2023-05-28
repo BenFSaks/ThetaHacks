@@ -6,7 +6,7 @@ import 'react-dropdown/style.css';
         
 const Config = (props: { audioValues: Array<string>, videoValues: Array<string>}) => {
     
-    const [isRecording, setRecording] = useState(false);
+    const [isRecording, setIsRecording] = useState(false);
     const [audioInput, setAudioInput] = useState(''); 
     const [videoInput, setVideoInput] = useState('');
     const [path, setPath] = useState('');  
@@ -22,6 +22,8 @@ const Config = (props: { audioValues: Array<string>, videoValues: Array<string>}
         }).then((r) => {
             console.log(r);
         });
+        setIsRecording(true)
+        setTimeout(setIsRecording, time*1000, false);
     }
 
     //DEBUG
