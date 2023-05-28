@@ -83,3 +83,6 @@ button {
   display: flex;
   justify-content: center;
 }
+.title {
+    padding-top:3%;
+}
