@@ -3,12 +3,9 @@ import {useRef, useEffect} from 'react'
 import firebase from 'firebase/compat/app'
 import videojs from "video.js"
 import 'video.js/dist/video-js.css';
-import { VideoJsPlayer } from 'video.js';
+import Player from 'video.js/dist/types/player';
 // import { VideoJsPlayerOptions, VideoJsPlayer } from "video.js";
 
-interface Props {
-  onReady: VideoJsPlayer;
-}
 const options = {
     techOrder: ["theta_hlsjs", "html5"],
     sources: [
@@ -27,51 +24,61 @@ const options = {
     },
 };
 
-export const VideoJS:React.FC<Props> = (props) => {
+export const VideoJS = () => {
   const videoRef = useRef(null);
-  const playerRef = useRef(null);
-  const onReady = props.onReady;
+  const playerRef = useRef<Player | null>(null);
 
+useEffect(() => {
+    const hlsScript = document.createElement("script");
+    hlsScript.src = "https://cdn.jsdelivr.net/npm/hls.js@0.12.4";
+    document.body.appendChild(hlsScript);
+
+    const thetaScript = document.createElement("script");
+    thetaScript.src =
+        "https://d1ktbyo67sh8fw.cloudfront.net/js/theta.umd.min.js";
+    document.body.appendChild(thetaScript);
+
+    const thetaHlsPluginScript = document.createElement("script");
+    thetaHlsPluginScript.src =
+        "https://d1ktbyo67sh8fw.cloudfront.net/js/theta-hls-plugin.umd.min.js";
+    document.body.appendChild(thetaHlsPluginScript);
+
+    const videoJsThetaPluginScript = document.createElement("script");
+    videoJsThetaPluginScript.src =
+        "https://d1ktbyo67sh8fw.cloudfront.net/js/videojs-theta-plugin.min.js";
+    document.body.appendChild(videoJsThetaPluginScript);
+
+    // Clean up the dynamically added scripts when the component is unmounted
+    // return () => {
+    //     document.body.removeChild(hlsScript);
+    //     document.body.removeChild(thetaScript);
+    //     document.body.removeChild(thetaHlsPluginScript);
+    //     document.body.removeChild(videoJsThetaPluginScript);
+    // };
+  }, []);
   useEffect(() => {
 
     // Make sure Video.js player is only initialized once
-    if (!playerRef.current) {
+    if (playerRef && !playerRef.current) {
       // The Video.js player needs to be _inside_ the component el for React 18 Strict Mode. 
-      const videoElement = document.createElement("video-js");
+      const videoElement = videoRef?.current;
+      if (!videoElement) return; 
 
-      videoElement.classList.add('vjs-big-play-centered');
-      videoRef.current.appendChild(videoElement);
+      playerRef.current = videojs(videoElement, options);
 
-      const player = playerRef.current = videojs(videoElement, options, () => {
-        videojs.log('player is ready');
-        onReady && onReady(player);
-      });
-
-    // You could update an existing player in the `else` block here
-    // on prop change, for example:
-    } else {
-      const player = playerRef.current;
-
-      player.autoplay(options.autoplay);
-      player.src(options.sources);
-    }
-  }, [options, videoRef]);
-
-  // Dispose the Video.js player when the functional component unmounts
-  useEffect(() => {
-    const player = playerRef.current;
-
-    return () => {
-      if (player && !player.isDisposed()) {
-        player.dispose();
+    };
+    return () =>{
+      if(playerRef.current){
+        playerRef.current?.dispose();
         playerRef.current = null;
       }
-    };
-  }, [playerRef]);
+    }
+  }, [options, videoRef, playerRef]);
 
   return (
     <div data-vjs-player>
-      <div ref={videoRef} />
+      <h1>helo</h1>
+      <video ref={videoRef} className={`video-js vjs-big-play-centered`}></video>
     </div>
   );
 }
