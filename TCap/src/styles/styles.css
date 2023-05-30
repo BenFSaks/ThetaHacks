@@ -121,6 +121,7 @@ button {
     justify-content: center;
 }
 .config-option {
+    text-align: center;
 }
 
 .config-path {
