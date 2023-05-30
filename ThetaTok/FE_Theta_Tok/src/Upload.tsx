@@ -28,7 +28,7 @@ export const Upload: React.FC<Props> = ({firebaseApp}) => {
   const [token] = useIdToken(getAuth(firebaseApp));
   const [data, setData] = useState<Upload[]>([]);
   const [userId, setUserId] = useState<firebase.User | null>(null);
-  const [isUpload, setIsUpload] = useState(true);
+  const [isUpload, setIsUpload] = useState(false);
 
   const getUserCollection = async () => {
     const db = firebaseApp.firestore();
@@ -67,7 +67,10 @@ export const Upload: React.FC<Props> = ({firebaseApp}) => {
     <div className='App'>
       <h1>Upload</h1>
       <header>
-        <h1 onClick={() => setIsUpload(false)} style={
+        <h1 onClick={() => {
+          setIsUpload(false);
+          window.location.reload();
+        }} style={
           {backgroundColor: isUpload ? 'inherit' : 'black',}
         }>Your Videos</h1> 
         

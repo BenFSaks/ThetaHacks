@@ -1,5 +1,6 @@
 import firebase from "firebase/compat";
 import { useEffect, useState } from "react";
+import './UploadVideo.css'
 const env = import.meta.env;
 interface ThetaData {
     create_time: string;
@@ -16,6 +17,7 @@ interface Props {
 export const UploadVideo: React.FC<Props> = ({firebaseApp}) => {
     const [getFile, setFile] = useState<File>();
     const [videoUploaded, setVideoUploaded] = useState<boolean>(false);
+    const [title, setTitle] = useState<string>("");
 
     const handleChange = (event: Event) => {
         const fileInput = event.target as HTMLInputElement;
@@ -95,7 +97,7 @@ export const UploadVideo: React.FC<Props> = ({firebaseApp}) => {
                 try {
                     const db = firebaseApp.firestore();
                     const collectionRef = db.collection('users').doc(firebaseApp.auth().currentUser?.uid)
-                    const newVideoData = { title: 'peter secret vid', video_src: `https://player.thetavideoapi.com/video/${thetaRes.body.videos[0].id}`};
+                    const newVideoData = { title, video_src: `https://player.thetavideoapi.com/video/${thetaRes.body.videos[0].id}`};
                     const documentSnapshot = await collectionRef.get();
                     const currentList = documentSnapshot.data()?.uploads || [];
 
@@ -116,13 +118,22 @@ export const UploadVideo: React.FC<Props> = ({firebaseApp}) => {
 
     };
 
+    const saveText = (event: Event) =>{
+        const titleInput = event.target as HTMLInputElement;
+        setTitle(titleInput.value);
+
+    }
     return (
         <div>
             <form>
+                <div>
+                    <label htmlFor="Title">Title of Video: </label>
+                    <input type="text" onChange={saveText}/>
+                </div>
                 {getFile? <></> : <h2>Select A File</h2>}
-                <input type="file" onChange={()=> handleChange} />
+                <input type="file" onChange={handleChange} />
                 {getFile ? (
-                    <button type="submit" onClick={()=> uploadToTheta}>
+                    <button type="submit" onClick={uploadToTheta}>
                         Upload
                     </button>
                 ) : <></>}

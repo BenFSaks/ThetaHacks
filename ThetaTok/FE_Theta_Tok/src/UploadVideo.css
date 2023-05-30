@@ -1,0 +1,12 @@
+form > div{
+    margin: 0 auto;
+    height: 100%;
+
+}
+form > div > input {
+    margin: .5em;
+    /* display: block; */
+}
+label {
+
+}
