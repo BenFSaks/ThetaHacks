@@ -4,17 +4,37 @@
 use std::process::{Command, Stdio};
 use std::io::{self, Write};
 use std::time::Duration;
+use std::path::Path;
 
 fn main() {
     tauri::Builder::default()
     
     //Invoke Functions 
-    .invoke_handler(tauri::generate_handler![record, get_dshow_devices])
+    .invoke_handler(tauri::generate_handler![record, get_dshow_devices, file_exists, no_file_tagged])
     
     //Tauri App Generator 
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
     
+}
+
+#[tauri::command]
+fn file_exists(path: &str) -> bool {
+    Path::new(path).exists().into()
+}
+
+#[tauri::command]
+fn no_file_tagged(path: &str) -> bool {
+    if  path.contains(".avi") ||
+        path.contains(".mov") ||
+        path.contains(".mp4") ||
+        path.contains(".wmv") ||
+        path.contains(".mkv") ||
+        path.contains(".WebM") {
+            return true.into();
+        }
+    return false.into()
+
 }
 #[tauri::command]
 fn get_dshow_devices() -> Vec<String> {

@@ -1,12 +1,28 @@
 use std::time::Duration;
 use std::io::{Write, self};
 use std::process::{Command, Stdio};
+use std::path::Path;
 fn main() {
-    println!("{:?}", get_dshow_devices());
-    record_camera_screen(10, &get_dshow_devices()[0], &get_dshow_devices()[2]);
+    println!("{}", file_exists("/Users/peter"));
+    println!("{}", no_file_tagged("av"));
 }
 
+fn file_exists(path: &str) -> bool {
+    Path::new(path).exists()
+}
 
+fn no_file_tagged(path: &str) -> bool {
+    if  path.contains(".avi") ||
+        path.contains(".mov") ||
+        path.contains(".mp4") ||
+        path.contains(".wmv") ||
+        path.contains(".mkv") ||
+        path.contains(".WebM") {
+            return true;
+        }
+    return false 
+
+}
 // this function will return a vector of strings that are the names of the dshow devices
 fn get_dshow_devices() -> Vec<String> {
 
