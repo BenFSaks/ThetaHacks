@@ -111,9 +111,9 @@ export const UploadVideo: React.FC<Props> = ({firebaseApp}) => {
         <div>
             <form>
                 {getFile? <></> : <h2>Select A File</h2>}
-                <input type="file" onChange={handleChange} />
+                <input type="file" onChange={()=> handleChange} />
                 {getFile ? (
-                    <button type="submit" onClick={uploadToTheta}>
+                    <button type="submit" onClick={()=> uploadToTheta}>
                         Upload
                     </button>
                 ) : <></>}

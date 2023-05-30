@@ -64,12 +64,13 @@ export const Upload: React.FC<Props> = ({firebaseApp}) => {
     )
   }
   return (
-    <div>
-      <h1>Upload </h1>
+    <div className='App'>
+      <h1>Upload</h1>
       <header>
         <h1 onClick={() => setIsUpload(false)} style={
           {backgroundColor: isUpload ? 'inherit' : 'black',}
         }>Your Videos</h1> 
+        
         <h1 onClick={() => setIsUpload(true)} style={
           {backgroundColor: isUpload ? 'black' : 'inherit',}
         }>Upload a Video</h1> 

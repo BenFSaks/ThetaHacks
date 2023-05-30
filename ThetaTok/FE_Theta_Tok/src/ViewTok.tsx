@@ -62,7 +62,6 @@ export const ViewTok: React.FC<Props> = ({auth}) => {
         };
         return (
             <div>
-                <h2>Sign In Page</h2>
                 <button onClick={signInWithGoogle}>Sign In</button>
             </div>
         );
@@ -71,17 +70,20 @@ export const ViewTok: React.FC<Props> = ({auth}) => {
 
     return (
         <div className="App">
-            <h1>Theta Tok</h1>
-            {user ?  
-                    <div>
-                        <button onClick={() => navigate("/upload", {state: {userId: user.uid}})}>Upload</button>
-                        <button onClick={() => firebase.auth().signOut()}>Signout</button>
+            <h1 className='title'>ThetaTok</h1>
+            {user 
+                ?  
+                    <div className="signed-in-buttons">
+                        <div className='upload-button'>
+                            <button onClick={() => navigate("/upload", {state: {userId: user.uid}})}>Upload</button>
+                        </div>
+                        <div className='sign-out-button'>
+                            <button onClick={() => firebase.auth().signOut()}>Signout</button>
+                        </div> 
                     </div>
                 : 
-                    <SignIn></SignIn>}
-            <div className="tiktok">
-                {user ? <VideoJS ></VideoJS> : <></>}
-            </div>
+                    <SignIn></SignIn>
+            }
         </div>
     )
 }
