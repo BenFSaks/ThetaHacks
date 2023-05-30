@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useNavigate} from 'react-router-dom'
 import firebase from 'firebase/compat/app'
 import {useAuthState} from 'react-firebase-hooks/auth'
 import 'firebase/compat/auth'
 import { Auth } from '@firebase/auth'
-import { TikTok } from './TikTok'
+import videojs from 'video.js'
+import { VideoJS } from './VideoJS'
 import './ViewTok.css'
 
+import Player from 'video.js/dist/types/player'
 interface Props {
   auth: Auth;
 }
@@ -39,6 +41,19 @@ export const ViewTok: React.FC<Props> = ({auth}) => {
             </div>
         );
     };
+    const playerRef = useRef<Player>(null);
+    const handlePlayerReady = (player: Player) => {
+        playerRef.current = player;
+        // You can handle player events here, for example:
+        player.on("waiting", () => {
+            videojs.log("player is waiting");
+        });
+
+        player.on("dispose", () => {
+            videojs.log("player will dispose");
+        });
+    };
+
     return (
         <div className="App">
             <h1>Theta Tok</h1>
@@ -50,7 +65,7 @@ export const ViewTok: React.FC<Props> = ({auth}) => {
                 : 
                     <SignIn></SignIn>}
             <div className="tiktok">
-                <TikTok></TikTok>
+                <VideoJS onReady={handlePlayerReady}></VideoJS>
             </div>
         </div>
     )

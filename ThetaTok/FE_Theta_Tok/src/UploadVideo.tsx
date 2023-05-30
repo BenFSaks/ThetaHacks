@@ -1,4 +1,4 @@
-import { get } from "http";
+import firebase from "firebase/compat";
 import { useEffect, useState } from "react";
 const env = import.meta.env;
 interface ThetaData {
@@ -10,24 +10,22 @@ interface ThetaData {
     service_account_id: string;
     update_time: string;
 }
-export const UploadVideo = () => {
-    const [loading, setLoading] = useState(false);
-
+interface Props {
+  firebaseApp: firebase.app.App;
+}
+export const UploadVideo: React.FC<Props> = ({firebaseApp}) => {
     const [getFile, setFile] = useState<File>();
 
     const handleChange = (event: Event) => {
         const fileInput = event.target as HTMLInputElement;
         if (fileInput.files != null) {
-            // console.log(fileInput.files[0]);
             setFile(fileInput.files[0]);
         } else {
             setFile(undefined);
         }
-        // console.log("File Not Setting", getFile);
         const formData = new FormData();
         if (getFile !== undefined) {
             formData.append("video", getFile);
-            console.log(formData.entries().next().value);
         }
     };
 
@@ -36,6 +34,7 @@ export const UploadVideo = () => {
         if (getFile !== undefined) {
             formData.append("video", getFile);
             console.log(formData);
+            console.log(formData.entries().next().value);
         } else {
             console.error("File not found");
         }
@@ -51,46 +50,6 @@ export const UploadVideo = () => {
             console.log("res", response)
         } catch (error) {
             console.error("Error", error);
-        }
-    };
-    const debugVideoStatus = async () => {
-        const videoID: string = "video_pqnzzkhunr81kfzr3vh45z1tz3";
-        const options = {
-            method: "GET",
-            headers: {
-                "x-tva-sa-id": env.VITE_thetaApiKey,
-                "x-tva-sa-secret": env.VITE_thetaApiSecret,
-            },
-        };
-        try {
-            const res = await fetch(`https://api.thetavideoapi.com/video/${videoID}`, options);
-            const data = await res.json();
-            console.log(data);
-        } catch (error) {
-            console.error(error)
-        }
-    };
-    const uploadTest = async () => {
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "x-tva-sa-id": env.VITE_thetaApiKey,
-                "x-tva-sa-secret": env.VITE_thetaApiSecret,
-            },
-            body: JSON.stringify({
-                source_uri:
-                    "https://tva-demo.s3.amazonaws.com/world.mp4",
-                playback_policy: "public",
-                nft_collection: "0x5d0004fe2e0ec6d002678c7fa01026cabde9e793",
-            }),
-        };
-        try {
-            const res = await fetch("https://api.thetavideoapi.com/video", options);
-            const data = await res.json();
-            console.log("TEST DATA", data)
-        } catch (error) {
-            console.error(error)
         }
     };
     const uploadToThetaVideoAPI = async (uploadID: string) => {
@@ -113,9 +72,9 @@ export const UploadVideo = () => {
             console.error(error)
         }
     };
-    const handleClick = async () => {
-        setLoading(true);
-
+    const uploadToTheta = async (event: Event) => {
+        event.preventDefault();
+        console.log("Heylo")
         const options = {
             method: "POST",
             headers: {
@@ -134,28 +93,31 @@ export const UploadVideo = () => {
             const thetaData: ThetaData = data.body.uploads[0];
             await uploadToPresign(thetaData.presigned_url);
             const uploadToTheta = await uploadToThetaVideoAPI(thetaData.id);
-            console.log("UPLOAD", await uploadToTheta?.json());
+            const thetaRes = await uploadToTheta?.json();
+            // if(thetaRes == "success"){
+            //     const db = firebaseApp.firestore();
+            //     const collectionRef = db.collection('users').doc(firebaseApp.auth().currentUser?.uid)
+            //     collectionRef.update({"uploads", })
+            //     console.log(collectionRef.get())
+
+            // }
         } catch (error) {
             console.error(error);
         }
 
-        setLoading(false);
     };
 
     return (
         <div>
-            <button onClick={uploadTest} disabled={loading}>Upload</button>
-            {loading ? (
-                <h1>Uploading...</h1>
-            ) : (
-                <form>
-                    <h1>Test</h1>
-                    <input type="file" onChange={handleChange} />
-                    { getFile ? (<button type="submit" onClick={handleClick}>
+            <form>
+                {getFile? <></> : <h2>Select A File</h2>}
+                <input type="file" onChange={handleChange} />
+                {getFile ? (
+                    <button type="submit" onClick={uploadToTheta}>
                         Upload
-                    </button>) : ( <h2>Select A File</h2>)}
-                </form>
-            )}
+                    </button>
+                ) : <></>}
+            </form>
         </div>
     );
 };

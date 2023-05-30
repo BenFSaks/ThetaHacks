@@ -30,7 +30,6 @@ export const Upload: React.FC<Props> = ({firebaseApp}) => {
   const [userId, setUserId] = useState<firebase.User | null>(null);
   const [isUpload, setIsUpload] = useState(true);
 
-  // const useUpload = () =>
   const getUserCollection = async () => {
     const db = firebaseApp.firestore();
     const usersCollection = db.collection('users').doc(firebase.auth().currentUser?.uid);
@@ -64,8 +63,6 @@ export const Upload: React.FC<Props> = ({firebaseApp}) => {
     </div>
     )
   }
-  const containerStyle = {
-  };
   return (
     <div>
       <h1>Upload </h1>
@@ -78,7 +75,7 @@ export const Upload: React.FC<Props> = ({firebaseApp}) => {
         }>Upload a Video</h1> 
       </header>
       {isUpload ? 
-        <UploadVideo />
+        <UploadVideo firebaseApp={firebaseApp}/>
       :
         (data ? (<YourVideos/>) : <h1>Loading...</h1>)
       }

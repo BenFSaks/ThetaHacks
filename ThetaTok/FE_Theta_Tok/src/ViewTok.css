@@ -7,9 +7,10 @@
   text-align: center;
 }
 .tiktok {
+  margin: 0 auto;
   border: 1em solid red;
   height: 35em;
-  width: 22em;
+  width: 50em;
 
 }
 
