@@ -15,6 +15,7 @@ interface Props {
 }
 export const UploadVideo: React.FC<Props> = ({firebaseApp}) => {
     const [getFile, setFile] = useState<File>();
+    const [videoUploaded, setVideoUploaded] = useState<boolean>(false);
 
     const handleChange = (event: Event) => {
         const fileInput = event.target as HTMLInputElement;
@@ -33,8 +34,6 @@ export const UploadVideo: React.FC<Props> = ({firebaseApp}) => {
         const formData = new FormData();
         if (getFile !== undefined) {
             formData.append("video", getFile);
-            console.log(formData);
-            console.log(formData.entries().next().value);
         } else {
             console.error("File not found");
         }
@@ -47,7 +46,6 @@ export const UploadVideo: React.FC<Props> = ({firebaseApp}) => {
         };
         try {
             const response = await fetch(presigned_url, options);
-            console.log("res", response)
         } catch (error) {
             console.error("Error", error);
         }
@@ -74,7 +72,6 @@ export const UploadVideo: React.FC<Props> = ({firebaseApp}) => {
     };
     const uploadToTheta = async (event: Event) => {
         event.preventDefault();
-        console.log("Heylo")
         const options = {
             method: "POST",
             headers: {
@@ -94,13 +91,25 @@ export const UploadVideo: React.FC<Props> = ({firebaseApp}) => {
             await uploadToPresign(thetaData.presigned_url);
             const uploadToTheta = await uploadToThetaVideoAPI(thetaData.id);
             const thetaRes = await uploadToTheta?.json();
-            // if(thetaRes == "success"){
-            //     const db = firebaseApp.firestore();
-            //     const collectionRef = db.collection('users').doc(firebaseApp.auth().currentUser?.uid)
-            //     collectionRef.update({"uploads", })
-            //     console.log(collectionRef.get())
+            if(thetaRes.status == "success"){
+                try {
+                    const db = firebaseApp.firestore();
+                    const collectionRef = db.collection('users').doc(firebaseApp.auth().currentUser?.uid)
+                    const newVideoData = { title: 'peter secret vid', video_src: `https://player.thetavideoapi.com/video/${thetaRes.body.videos[0].id}`};
+                    const documentSnapshot = await collectionRef.get();
+                    const currentList = documentSnapshot.data()?.uploads || [];
 
-            // }
+                    // Add the new item to the list
+                    const updatedList = [...currentList, newVideoData];
+
+                    // Update the list document with the updated list
+                    await collectionRef.update({ uploads: updatedList });
+                    setVideoUploaded(true);
+                } catch (error) {
+                    console.log(error);
+                    
+                }
+            }
         } catch (error) {
             console.error(error);
         }
@@ -118,6 +127,7 @@ export const UploadVideo: React.FC<Props> = ({firebaseApp}) => {
                     </button>
                 ) : <></>}
             </form>
+            {videoUploaded ? <h1>Video Uploaded!</h1> : <></>}
         </div>
     );
 };
