@@ -101,7 +101,7 @@ fn record(time: u64, video: &str, audio: &str, output: &str) {
         .arg("-i")
         .arg(vid)
         .arg("-video_size")
-        .arg("1280x720")
+        .arg("640x480")
         .arg("-filter_complex")
         .arg("'overlay'")
         .arg(output)
