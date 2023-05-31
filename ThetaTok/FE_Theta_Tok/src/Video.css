@@ -2,10 +2,13 @@
     display: flex;
 
     margin: 2em auto;
-    /* flex-direction: column; */
+    flex-direction: column;
+}
+.video > h1{
 }
 .video > div {
     position: absolute;
+    margin-top: 7em;
     /* margin-left: 30em; */
 }
 .video > div > button {
@@ -14,4 +17,7 @@
     background-color: transparent;
     display: block;
 
+}
+iframe{
+    border-radius: 1.5em;
 }

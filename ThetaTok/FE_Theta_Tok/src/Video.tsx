@@ -65,7 +65,11 @@ export const Video: React.FC<Props> = ({firebaseApp}) => {
 
   return (
     <div className='video'>
-        {videos[currVid] ? <iframe src={videos[currVid].video_src} frameborder="0" unMute allowFullScreen width="500" height="760"></iframe> : <></>}
+
+        {videos[currVid] ? <h2>{videos[currVid].title}</h2> : <></>}
+        {videos[currVid] ? 
+                <iframe src={videos[currVid].video_src} frameborder="0" unMute allowFullScreen width="500" height="760"></iframe> 
+            : <></>}
         <div>
             <button disabled={outOfBoundsUp()} onClick={()=> setCurrVid(currVid-1)}>↑</button>
             <button disabled={outOfBoundsDown()} onClick={()=> setCurrVid(currVid+1)}>↓</button>
