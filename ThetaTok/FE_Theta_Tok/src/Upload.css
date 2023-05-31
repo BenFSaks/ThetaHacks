@@ -9,7 +9,16 @@ header{
     display: flex;
     justify-content: space-around;
 }
+header > button {
+    width: '35%'; 
+    font-size: '1.25em';
+    margin: 1em;
+}
 .yourVideos > div > h2 {
     color: aquamarine;
 
+}
+.uploader {
+    margin-top: 2em;
+    height: 40em;
 }

@@ -4,7 +4,7 @@ import { useIdToken  } from 'react-firebase-hooks/auth';
 import React, {useState, useEffect} from 'react'
 import firebase from 'firebase/compat/app'
 import { getAuth } from '@firebase/auth';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import './Upload.css'
 import { UploadVideo } from './UploadVideo';
 
@@ -24,6 +24,7 @@ interface Upload{
 }
 export const Upload: React.FC<Props> = ({firebaseApp}) => {
   const location = useLocation();
+  const nav = useNavigate();
 
   const [token] = useIdToken(getAuth(firebaseApp));
   const [data, setData] = useState<Upload[]>([]);
@@ -67,19 +68,22 @@ export const Upload: React.FC<Props> = ({firebaseApp}) => {
     <div className='App'>
       <h1>Upload</h1>
       <header>
-        <h1 onClick={() => {
+        <button onClick={()=> nav("/")}> Home </button>
+        <button onClick={() => {
           setIsUpload(false);
           window.location.reload();
         }} style={
-          {backgroundColor: isUpload ? 'inherit' : 'black',}
-        }>Your Videos</h1> 
+          {backgroundColor: isUpload ? 'black' : 'lightblue',}
+        }>Your Videos</button> 
         
-        <h1 onClick={() => setIsUpload(true)} style={
-          {backgroundColor: isUpload ? 'black' : 'inherit',}
-        }>Upload a Video</h1> 
+        <button onClick={() => setIsUpload(true)} style={
+        {backgroundColor: isUpload ? 'lightblue' : 'black'}
+        }>Upload a Video</button> 
       </header>
       {isUpload ? 
-        <UploadVideo firebaseApp={firebaseApp}/>
+        <div className='uploader'>
+          <UploadVideo firebaseApp={firebaseApp}/>
+        </div>
       :
         (data ? (<YourVideos/>) : <h1>Loading...</h1>)
       }

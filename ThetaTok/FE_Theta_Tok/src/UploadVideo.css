@@ -1,7 +1,12 @@
 form > div{
     margin: 0 auto;
+    margin-bottom: 1em;
     height: 100%;
+    font-size: 1.5em;
 
+}
+form > button {
+    width: 30%;
 }
 form > div > input {
     margin: .5em;
