@@ -5,8 +5,4 @@ form > div{
 }
 form > div > input {
     margin: .5em;
-    /* display: block; */
-}
-label {
-
 }

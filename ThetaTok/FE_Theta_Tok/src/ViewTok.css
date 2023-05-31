@@ -11,7 +11,20 @@ button {
 }
 
 .title {
-  padding-bottom: 50px;
+  padding-bottom: 1em;
+}
+.tcap {
+  position:relative;
+  right: 0px;
+  /* padding-left:75%; */
+}
+.tcap > button {
+  display: flex;
+  align-items: center;
+
+  margin: auto;
+}
+.tcap > button > image{
 }
 
 .App {
@@ -29,4 +42,7 @@ button {
 .upload-button{
   padding-bottom: 10px;
 }
-
+#tcapLogo{
+  height: 5em;
+  margin-right: 2em;
+}

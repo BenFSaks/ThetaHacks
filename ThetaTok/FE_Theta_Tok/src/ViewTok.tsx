@@ -5,6 +5,7 @@ import {useAuthState} from 'react-firebase-hooks/auth'
 import 'firebase/compat/auth'
 import { Auth } from '@firebase/auth'
 import './ViewTok.css'
+import tcapLogo from './tcap_logo.png'
 
 interface Props {
   auth: Auth;
@@ -41,7 +42,18 @@ export const ViewTok: React.FC<Props> = ({auth}) => {
 
     return (
         <div className="App">
-            <h1 className='title'>ThetaTok</h1>
+            <div className='tcap'>
+                <button onClick={() => {
+                    const win = window.open("https://drive.google.com/file/d/1XlHO-xWiKP-1ieArGH7bsX3XhTfxeLfy/view", "_blank");
+                    win?.focus();
+                }}>
+                    Download TCAP for short form video recording
+                    <img id="tcapLogo" src={tcapLogo} />
+                </button>
+            </div>
+            <div className='title'>
+                <h1>ThetaTok</h1>
+            </div>
             {user 
                 ?  
                     <div className="signed-in-buttons">
