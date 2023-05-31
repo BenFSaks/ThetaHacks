@@ -2,7 +2,6 @@
   width: 100%;
   height: 100%; 
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
@@ -11,6 +10,8 @@ button {
 }
 
 .title {
+  /* margin: 0 auto; */
+  padding-left: 10em;
   padding-bottom: 1em;
 }
 .title > h1 {
@@ -34,6 +35,7 @@ button {
 .App {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .signed-in-buttons{
