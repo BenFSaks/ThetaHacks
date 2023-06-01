@@ -99,7 +99,7 @@ fn record(time: u64, video: &str, audio: &str, output: &str) {
         .arg("-f")
         .arg("dshow")
         .arg("-video_size")
-        .arg("1280x720")
+        .arg("640x360")
         .arg("-i")
         .arg(vid)
         .arg("-filter_complex")
