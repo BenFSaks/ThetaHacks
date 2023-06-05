@@ -18,6 +18,9 @@ header > button {
     color: aquamarine;
 
 }
+iframe {
+    margin: 1em;
+}
 .uploader {
     margin-top: 2em;
     height: 40em;

@@ -1,5 +1,5 @@
 import firebase from "firebase/compat";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import './UploadVideo.css'
 const env = import.meta.env;
 interface ThetaData {
@@ -19,7 +19,7 @@ export const UploadVideo: React.FC<Props> = ({firebaseApp}) => {
     const [videoUploaded, setVideoUploaded] = useState<boolean>(false);
     const [title, setTitle] = useState<string>("");
 
-    const handleChange = (event: Event) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const fileInput = event.target as HTMLInputElement;
         if (fileInput.files != null) {
             setFile(fileInput.files[0]);
@@ -72,7 +72,7 @@ export const UploadVideo: React.FC<Props> = ({firebaseApp}) => {
             console.error(error)
         }
     };
-    const uploadToTheta = async (event: Event) => {
+    const uploadToTheta = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         const options = {
             method: "POST",
@@ -118,7 +118,7 @@ export const UploadVideo: React.FC<Props> = ({firebaseApp}) => {
 
     };
 
-    const saveText = (event: Event) =>{
+    const saveText = (event: ChangeEvent<HTMLInputElement>) =>{
         const titleInput = event.target as HTMLInputElement;
         setTitle(titleInput.value);
 
